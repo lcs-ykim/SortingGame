@@ -9,10 +9,34 @@ import SwiftUI
 
 struct HistoryView: View {
     
-    // MARK: Stored Properties
+    // MARK: Stored properties
     @Binding var pastQuizzes: [Quiz]
     
+    // Tracks what results should be visible currently
+    @State private var selectedStatus: Status = .incorrect
+    
+    // MARK: Computer properties
+    
     var body: some View {
+        
+        // Control filtering of prior tasks
+        VStack {
+            // Label for picker
+            Text("Filter by...")
+                .font(Font.caption.smallCaps())
+                .foregroundColor(.secondary)
+            
+            // Picker to allow user to select what tasks to show
+            Picker("Filter", selection: $selectedStatus) {
+                Text(Status.incorrect.rawValue)
+                    .tag(Status.incorrect)
+                Text(Status.correct.rawValue)
+                    .tag(Status.correct)
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal)
+        }
+        .padding(.bottom)
         
         // Show results of prior questions attempted
         List(pastQuizzes) { result in
@@ -37,4 +61,29 @@ struct HistoryView: View {
         .padding(.horizontal)
         .font(.system(size: 72))
     }
+    
+    // MARK: Functions
+    // Filter the list of results to be shown
+    func filter(_ listOfResults: [Quiz], by status: Status) -> [Quiz] {
+        
+        // Create an empty list of results
+        var filteredResults: [Quiz] = []
+        
+        // Iterate over the list of results, and build a new list
+        // that only includes the selected type of result
+        for currentResult in listOfResults {
+            
+            if status == .correct && currentResult.status == Status.correct {
+                filteredResults.insert(currentResult, at: 0)
+            } else if status == .incorrect && currentResult.status == Status.incorrect {
+                filteredResults.insert(currentResult, at: 0)
+            }
+            
+        }
+        
+        // Return the filtered list of results
+        return filteredResults
+        
+    }
+    
 }
