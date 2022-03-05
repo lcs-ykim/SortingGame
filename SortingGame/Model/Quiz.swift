@@ -7,18 +7,19 @@
 
 import Foundation
 
-// Tracks the result of answering a question
-// Also stores unsolved questions
+// Tracks the result of answering a question in the format of "Where does (object) go?")
+// The correct answer is the corresponding type of bin (e.g. compost bin aka "B")
+// Stores both unsolved and solved questions
 struct Quiz: Identifiable {
     let id = UUID()
-    let question: String
-    let answer: String
+    let object: String
+    let bin: String
     let answerGiven: String
-    let answerCorrect: Status
+    let status: Status
 }
 
-// List of all questions (to be completed)
-let Questions: [Quiz] = [Quiz(question: "Apple",
-                                answer: "B",
+// List of all questions (TBC)
+let uncompletedQuizzes: [Quiz] = [Quiz(object: "Apple",
+                                bin: "B",
                                 answerGiven: "",
-                                answerCorrect: Status.unsolved)]
+                                status: Status.unsolved)]
