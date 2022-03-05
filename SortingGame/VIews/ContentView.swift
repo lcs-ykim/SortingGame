@@ -24,6 +24,9 @@ struct ContentView: View {
     // Tracks whether the input has even been checked yet
     @State var status: Status = Status.unsolved
     
+    // Controls whether to show HistoryView or not
+    @State var showHistoryView: Bool = false
+    
     var body: some View {
         
         VStack(spacing: 0) {
@@ -111,6 +114,21 @@ struct ContentView: View {
                              status == Status.incorrect ? 1.0 : 0.0)
                 
             }
+            
+            Button(action: {
+                
+                // Shows HistoryView
+                showHistoryView = true
+                
+            }, label: {
+                Text("History")
+                    .font(.largeTitle)
+            })
+                .sheet(isPresented: $showHistoryView) {
+                    HistoryView()
+                }
+                .padding()
+                .buttonStyle(.bordered)
             
         }
 
