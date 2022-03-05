@@ -13,13 +13,13 @@ import Foundation
 struct Quiz: Identifiable {
     let id = UUID()
     let object: String
-    let bin: String
-    let answerGiven: String
+    let bin: Bin
+    let answerGiven: Bin
     let status: Status
 }
 
 // List of all questions (TBC)
 let uncompletedQuizzes: [Quiz] = [Quiz(object: "Apple",
-                                bin: "B",
+                                       bin: .B,
                                 answerGiven: "",
                                 status: Status.unsolved)]

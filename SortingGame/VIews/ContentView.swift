@@ -19,10 +19,10 @@ struct ContentView: View {
     @State var completedQuizzes: [Quiz] = []
     
     // Holds the user input
-    @State var inputGiven = ""
+    @State var inputGiven: Bin
 
     // Tracks whether the input has even been checked yet
-    @State var status: Status = Status.unsolved
+    @State var status: Status = .unsolved
     
     // Controls whether to show HistoryView or not
     @State var showHistoryView: Bool = false
@@ -34,23 +34,29 @@ struct ContentView: View {
             // Displays the question
             Text("Where does \(quiz!.object) go?")
             
-            // Displays possible answer choices
-            Text("A – ... B – Compost C – ...")
-            
             // Result and input area
-            TextField("", text: $inputGiven)
-
+            Picker("Pick Answer", selection: $inputGiven) {
+                Text(Bin.recycle.rawValue)
+                    .tag(Bin.recycle)
+                Text(Bin.compost.rawValue)
+                    .tag(Bin.compost)
+                Text(Bin.garbage.rawValue)
+                    .tag(Bin.garbage)
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal)
+            
             ZStack {
                 Image(systemName: "checkmark.circle")
                     .foregroundColor(.green)
                 // Only show this when the answer given is correct
-                    .opacity(status == Status.correct ? 1.0 : 0.0)
+                    .opacity(status == .correct ? 1.0 : 0.0)
                 
                 Image(systemName: "x.square")
                     .foregroundColor(.red)
                 // Only show this when the answer given is correct
                 // Neither of the images show up when the quiz is unsolved
-                    .opacity(status == Status.incorrect ? 1.0 : 0.0)
+                    .opacity(status == .incorrect ? 1.0 : 0.0)
             }
             
             // Buttons to control program
@@ -63,11 +69,11 @@ struct ContentView: View {
                     
                     if inputGiven == quiz!.bin {
                         
-                        status = Status.correct
+                        status = .correct
                         
                     } else {
                         
-                        status = Status.incorrect
+                        status = .incorrect
                         
                     }
                     
@@ -79,7 +85,7 @@ struct ContentView: View {
                         .font(.largeTitle)
                 })
                 // Only show this button when an answer has not been checked
-                    .opacity(status == Status.unsolved ? 1.0 : 0.0)
+                    .opacity(status == .unsolved ? 1.0 : 0.0)
                     .padding()
                     .buttonStyle(.bordered)
                 
@@ -90,10 +96,7 @@ struct ContentView: View {
                     quiz = uncompletedQuizzes.randomElement()
                     
                     // Reset properties that track what's happening with the current question
-                    status = Status.unsolved
-                    
-                    // Reset the input field
-                    inputGiven = ""
+                    status = .unsolved
                     
                 }, label: {
                     Text("New question")
@@ -103,8 +106,8 @@ struct ContentView: View {
                     .buttonStyle(.bordered)
                 
                 // Only show this button when an answer has been checked
-                    .opacity(status == Status.correct ||
-                             status == Status.incorrect ? 1.0 : 0.0)
+                    .opacity(status == .correct ||
+                             status == .incorrect ? 1.0 : 0.0)
                 
             }
             

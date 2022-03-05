@@ -42,18 +42,18 @@ struct HistoryView: View {
         List(filter(pastQuizzes, by: selectedStatus)) { result in
             VStack {
                 Text("Where does \(result.object) go?")
-                Text("Your answer was \(result.answerGiven).")
-                Text("The correct answer was \(result.bin).")
-                    .opacity(result.status == Status.incorrect ? 1.0 : 0.0)
+                Text("You said it goes to \(result.answerGiven.rawValue).")
+                Text("The correct answer was \(result.bin.rawValue).")
+                    .opacity(result.status == .incorrect ? 1.0 : 0.0)
                 Spacer()
                 ZStack {
                     Image(systemName: "checkmark.circle")
                         .foregroundColor(.green)
-                        .opacity(result.status == Status.correct ? 1.0 : 0.0)
+                        .opacity(result.status == .correct ? 1.0 : 0.0)
                     
                     Image(systemName: "x.square")
                         .foregroundColor(.red)
-                        .opacity(result.status == Status.incorrect ? 1.0 : 0.0)
+                        .opacity(result.status == .incorrect ? 1.0 : 0.0)
                 }
             }
             .font(.title)
@@ -73,9 +73,9 @@ struct HistoryView: View {
         // that only includes the selected type of result
         for currentResult in listOfResults {
             
-            if status == .correct && currentResult.status == Status.correct {
+            if status == .correct && currentResult.status == .correct {
                 filteredResults.insert(currentResult, at: 0)
-            } else if status == .incorrect && currentResult.status == Status.incorrect {
+            } else if status == .incorrect && currentResult.status == .incorrect {
                 filteredResults.insert(currentResult, at: 0)
             }
             
