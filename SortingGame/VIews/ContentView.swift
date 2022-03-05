@@ -57,8 +57,78 @@ struct ContentView: View {
                     .multilineTextAlignment(.trailing)
             }
             
+            // Buttons to control program
+            ZStack {
+                
+                // Allow input to be checked
+                Button(action: {
+                    
+                    // Checks answer
+                    
+                    if inputGiven == quiz!.bin {
+                        
+                        status = Status.correct
+                        
+                    } else {
+                        
+                        status = Status.incorrect
+                        
+                    }
+                    
+                    // Save this result
+                    saveResult()
+                    
+                }, label: {
+                    Text("Check Answer")
+                        .font(.largeTitle)
+                })
+                // Only show this button when an answer has not been checked
+                    .opacity(status == Status.unsolved ? 1.0 : 0.0)
+                    .padding()
+                    .buttonStyle(.bordered)
+                
+                // Allow new question to be generated
+                Button(action: {
+                    
+                    // Generate a new question
+                    quiz = uncompletedQuizzes.randomElement()
+                    
+                    // Reset properties that track what's happening with the current question
+                    status = Status.unsolved
+                    
+                    // Reset the input field
+                    inputGiven = ""
+                    
+                }, label: {
+                    Text("New question")
+                        .font(.largeTitle)
+                })
+                    .padding()
+                    .buttonStyle(.bordered)
+                
+                // Only show this button when an answer has been checked
+                    .opacity(status == Status.correct ||
+                             status == Status.incorrect ? 1.0 : 0.0)
+                
+            }
+            
         }
 
+    }
+    
+    // MARK: Functions
+    // Save the result of a question that has been answered
+    func saveResult() {
+        
+        // Create a result to save based on current question state
+        let newResult = Quiz(object: quiz!.object,
+                             bin: quiz!.bin,
+                             answerGiven: inputGiven,
+                             status: status)
+        
+        // Ensure most recent result is always at top of the list
+        completedQuizzes.insert(newResult, at: 0)
+        
     }
 
 }
