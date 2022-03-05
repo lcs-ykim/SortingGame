@@ -8,13 +8,33 @@
 import SwiftUI
 
 struct HistoryView: View {
+    
+    // MARK: Stored Properties
+    @Binding var pastQuizzes: [Quiz]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-struct HistoryView_Previews: PreviewProvider {
-    static var previews: some View {
-        HistoryView()
+        
+        // Show results of prior questions attempted
+        List(pastQuizzes) { result in
+            HStack {
+                Text("Where does \(result.object) go?")
+                Text("Your answer was \(result.answerGiven).")
+                Text("The correct answer was \(result.bin).")
+                    .opacity(result.status == Status.incorrect ? 1.0 : 0.0)
+                Spacer()
+                ZStack {
+                    Image(systemName: "checkmark.circle")
+                        .foregroundColor(.green)
+                        .opacity(result.status == Status.correct ? 1.0 : 0.0)
+                    
+                    Image(systemName: "x.square")
+                        .foregroundColor(.red)
+                        .opacity(result.status == Status.incorrect ? 1.0 : 0.0)
+                }
+            }
+            .font(.title)
+        }
+        .padding(.horizontal)
+        .font(.system(size: 72))
     }
 }
