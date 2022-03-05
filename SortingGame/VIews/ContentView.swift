@@ -38,26 +38,19 @@ struct ContentView: View {
             Text("A – ... B – Compost C – ...")
             
             // Result and input area
-            HStack {
+            TextField("", text: $inputGiven)
+
+            ZStack {
+                Image(systemName: "checkmark.circle")
+                    .foregroundColor(.green)
+                // Only show this when the answer given is correct
+                    .opacity(status == Status.correct ? 1.0 : 0.0)
                 
-                ZStack {
-                    Image(systemName: "checkmark.circle")
-                        .foregroundColor(.green)
-                    // Only show this when the answer given is correct
-                        .opacity(status == Status.correct ? 1.0 : 0.0)
-                    
-                    Image(systemName: "x.square")
-                        .foregroundColor(.red)
-                    // Only show this when the answer given is correct
-                    // Neither of the images show up when the quiz is unsolved
-                        .opacity(status == Status.incorrect ? 1.0 : 0.0)
-                }
-                
-                Spacer()
-                
-                TextField("", text: $inputGiven)
-                // Ensure input is right-aligned
-                    .multilineTextAlignment(.trailing)
+                Image(systemName: "x.square")
+                    .foregroundColor(.red)
+                // Only show this when the answer given is correct
+                // Neither of the images show up when the quiz is unsolved
+                    .opacity(status == Status.incorrect ? 1.0 : 0.0)
             }
             
             // Buttons to control program
@@ -125,6 +118,7 @@ struct ContentView: View {
                     .font(.largeTitle)
             })
                 .sheet(isPresented: $showHistoryView) {
+                    // Passes the uupdated
                     HistoryView(pastQuizzes: $completedQuizzes)
                 }
                 .padding()

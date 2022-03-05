@@ -39,8 +39,8 @@ struct HistoryView: View {
         .padding(.bottom)
         
         // Show results of prior questions attempted
-        List(pastQuizzes) { result in
-            HStack {
+        List(filter(pastQuizzes, by: selectedStatus)) { result in
+            VStack {
                 Text("Where does \(result.object) go?")
                 Text("Your answer was \(result.answerGiven).")
                 Text("The correct answer was \(result.bin).")
