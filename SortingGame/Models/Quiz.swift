@@ -20,6 +20,6 @@ struct Quiz: Identifiable {
 
 // List of all questions (TBC)
 let uncompletedQuizzes: [Quiz] = [Quiz(object: "Apple",
-                                       bin: .B,
-                                answerGiven: "",
+                                       bin: .compost,
+                                       answerGiven: .recycle,
                                 status: Status.unsolved)]

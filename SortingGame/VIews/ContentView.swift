@@ -19,7 +19,7 @@ struct ContentView: View {
     @State var completedQuizzes: [Quiz] = []
     
     // Holds the user input
-    @State var inputGiven: Bin
+    @State var inputGiven: Bin = .recycle
 
     // Tracks whether the input has even been checked yet
     @State var status: Status = .unsolved
