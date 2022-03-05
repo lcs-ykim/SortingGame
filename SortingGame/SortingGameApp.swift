@@ -11,6 +11,8 @@ import SwiftUI
 struct SortingGameApp: App {
     var body: some Scene {
         WindowGroup {
+            
+            // TabView for Quizzes & Past attempts
             ContentView()
         }
     }
