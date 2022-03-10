@@ -7,9 +7,10 @@
 
 import Foundation
 
-// This enumeration indicates the real meaninigs of A, B, and C
+// This enumeration defines the types of bins.
 enum Bin: String {
     case recycle = "Recycle"
     case compost = "Compost"
     case garbage = "Garbage"
+    case liquid = "Liquid"
 }

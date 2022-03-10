@@ -15,36 +15,47 @@ struct ContentView: View {
     // A random question generated
     @State var quiz = uncompletedQuizzes.randomElement()
     
-    // Tracks all questions completed
+    // Tracks all questions completed so far
     @State var completedQuizzes: [Quiz] = []
     
-    // Holds the user input
+    // Holds the user's current answer
     @State var inputGiven: Bin = .recycle
 
-    // Tracks whether the input has even been checked yet
+    // Tracks whether the input has been checked yet
+    // and whether it is correct or not
     @State var status: Status = .unsolved
     
     // Controls whether to show HistoryView or not
     @State var showHistoryView: Bool = false
     
+    // MARK: Computed properties
+    
+    // The main user interface
     var body: some View {
         
         VStack(spacing: 0) {
             
-            // Displays the question
-            Text("Where does \(quiz!.object) go?")
-            
-            // Result and input area
-            Picker("Pick Answer", selection: $inputGiven) {
-                Text(Bin.recycle.rawValue)
-                    .tag(Bin.recycle)
-                Text(Bin.compost.rawValue)
-                    .tag(Bin.compost)
-                Text(Bin.garbage.rawValue)
-                    .tag(Bin.garbage)
+            VStack {
+                
+                // Displays the question
+                Text("Where does \(quiz!.object) go?")
+                
+                // Result and input area
+                Picker("Pick Answer", selection: $inputGiven) {
+                    Text(Bin.recycle.rawValue)
+                        .tag(Bin.recycle)
+                    Text(Bin.compost.rawValue)
+                        .tag(Bin.compost)
+                    Text(Bin.garbage.rawValue)
+                        .tag(Bin.garbage)
+                    Text(Bin.liquid.rawValue)
+                        .tag(Bin.liquid)
+
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal)
+
             }
-            .pickerStyle(.segmented)
-            .padding(.horizontal)
             
             ZStack {
                 Image(systemName: "checkmark.circle")
@@ -54,19 +65,18 @@ struct ContentView: View {
                 
                 Image(systemName: "x.square")
                     .foregroundColor(.red)
-                // Only show this when the answer given is correct
+                // Only show this when the answer given is incorrect
                 // Neither of the images show up when the quiz is unsolved
                     .opacity(status == .incorrect ? 1.0 : 0.0)
             }
             
-            // Buttons to control program
+            // Buttons for the user
             ZStack {
                 
-                // Allow input to be checked
+                // Allow the user's answer to be checked
                 Button(action: {
                     
-                    // Checks answer
-                    
+                    // Checks answers
                     if inputGiven == quiz!.bin {
                         
                         status = .correct
@@ -77,7 +87,7 @@ struct ContentView: View {
                         
                     }
                     
-                    // Save this result
+                    // Save this attempt to history
                     saveResult()
                     
                 }, label: {
@@ -92,10 +102,10 @@ struct ContentView: View {
                 // Allow new question to be generated
                 Button(action: {
                     
-                    // Generate a new question
+                    // Randomly pick a new question
                     quiz = uncompletedQuizzes.randomElement()
                     
-                    // Reset properties that track what's happening with the current question
+                    // Reset question status accordingly
                     status = .unsolved
                     
                 }, label: {
@@ -111,6 +121,7 @@ struct ContentView: View {
                 
             }
             
+            // Gives an option for the user to review their past attempts
             Button(action: {
                 
                 // Shows HistoryView
@@ -121,7 +132,7 @@ struct ContentView: View {
                     .font(.largeTitle)
             })
                 .sheet(isPresented: $showHistoryView) {
-                    // Passes the uupdated
+                    // Passes the updated list of attempts to HistoryView
                     HistoryView(pastQuizzes: $completedQuizzes)
                 }
                 .padding()
@@ -132,16 +143,16 @@ struct ContentView: View {
     }
     
     // MARK: Functions
-    // Save the result of a question that has been answered
+    // Save user's current attempt
     func saveResult() {
         
-        // Create a result to save based on current question state
+        // Create an instance of the current attempt based on user inputs
         let newResult = Quiz(object: quiz!.object,
                              bin: quiz!.bin,
                              answerGiven: inputGiven,
                              status: status)
         
-        // Ensure most recent result is always at top of the list
+        // Ensure most recent attempt is at the start of the list
         completedQuizzes.insert(newResult, at: 0)
         
     }

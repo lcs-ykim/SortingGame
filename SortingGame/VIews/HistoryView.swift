@@ -10,23 +10,25 @@ import SwiftUI
 struct HistoryView: View {
     
     // MARK: Stored properties
+    
+    // Receives the updated list of user attempts
     @Binding var pastQuizzes: [Quiz]
     
-    // Tracks what results should be visible currently
+    // Tracks what type of attempts the user wants to see
     @State private var selectedStatus: Status = .incorrect
     
     // MARK: Computer properties
     
     var body: some View {
         
-        // Control filtering of prior tasks
+        // Control filtering of prior attempts
         VStack {
             // Label for picker
             Text("Filter by...")
                 .font(Font.caption.smallCaps())
                 .foregroundColor(.secondary)
             
-            // Picker to allow user to select what tasks to show
+            // Picker to allow user to select what attempts to show
             Picker("Filter", selection: $selectedStatus) {
                 Text(Status.incorrect.rawValue)
                     .tag(Status.incorrect)
@@ -38,22 +40,22 @@ struct HistoryView: View {
         }
         .padding(.bottom)
         
-        // Show results of prior questions attempted
-        List(filter(pastQuizzes, by: selectedStatus)) { result in
+        // Show previous attempts based on user's filter choice
+        List(filter(pastQuizzes, by: selectedStatus)) { attempt in
             VStack {
-                Text("Where does \(result.object) go?")
-                Text("You said it goes to \(result.answerGiven.rawValue).")
-                Text("The correct answer was \(result.bin.rawValue).")
-                    .opacity(result.status == .incorrect ? 1.0 : 0.0)
+                Text("Where does \(attempt.object) go?")
+                Text("You said it goes to \(attempt.answerGiven.rawValue).")
+                Text("The correct answer was \(attempt.bin.rawValue).")
+                    .opacity(attempt.status == .incorrect ? 1.0 : 0.0)
                 Spacer()
                 ZStack {
                     Image(systemName: "checkmark.circle")
                         .foregroundColor(.green)
-                        .opacity(result.status == .correct ? 1.0 : 0.0)
+                        .opacity(attempt.status == .correct ? 1.0 : 0.0)
                     
                     Image(systemName: "x.square")
                         .foregroundColor(.red)
-                        .opacity(result.status == .incorrect ? 1.0 : 0.0)
+                        .opacity(attempt.status == .incorrect ? 1.0 : 0.0)
                 }
             }
             .font(.title)
@@ -63,26 +65,27 @@ struct HistoryView: View {
     }
     
     // MARK: Functions
-    // Filter the list of results to be shown
-    func filter(_ listOfResults: [Quiz], by status: Status) -> [Quiz] {
+    
+    // Filter the list of attempts to be shown
+    func filter(_ listOfAttempts: [Quiz], by status: Status) -> [Quiz] {
         
-        // Create an empty list of results
-        var filteredResults: [Quiz] = []
+        // Create an empty list of attempts
+        var filteredAttempts: [Quiz] = []
         
-        // Iterate over the list of results, and build a new list
-        // that only includes the selected type of result
-        for currentResult in listOfResults {
+        // Iterate over the list of attempts, and build a filtered list
+        // that only includes the selected type of attempt
+        for currentAttempt in listOfAttempts {
             
-            if status == .correct && currentResult.status == .correct {
-                filteredResults.insert(currentResult, at: 0)
-            } else if status == .incorrect && currentResult.status == .incorrect {
-                filteredResults.insert(currentResult, at: 0)
+            if status == .correct && currentAttempt.status == .correct {
+                filteredAttempts.insert(currentAttempt, at: 0)
+            } else if status == .incorrect && currentAttempt.status == .incorrect {
+                filteredAttempts.insert(currentAttempt, at: 0)
             }
             
         }
         
-        // Return the filtered list of results
-        return filteredResults
+        // Return the filtered list of attempts
+        return filteredAttempts
         
     }
     
