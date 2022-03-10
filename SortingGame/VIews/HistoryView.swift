@@ -14,8 +14,8 @@ struct HistoryView: View {
     // Receives the updated list of user attempts
     @Binding var pastQuizzes: [Quiz]
     
-    // Tracks what type of attempts the user wants to see
-    @State private var selectedStatus: Status = .incorrect
+    // Tracks which bin of attempts the user wants to see
+    @State private var selectedBin: Bin = .all
     
     // MARK: Computer properties
     
@@ -29,11 +29,17 @@ struct HistoryView: View {
                 .foregroundColor(.secondary)
             
             // Picker to allow user to select what attempts to show
-            Picker("Filter", selection: $selectedStatus) {
-                Text(Status.incorrect.rawValue)
-                    .tag(Status.incorrect)
-                Text(Status.correct.rawValue)
-                    .tag(Status.correct)
+            Picker("Filter", selection: $selectedBin) {
+                Text(Bin.all.rawValue)
+                    .tag(Bin.all)
+                Text(Bin.compost.rawValue)
+                    .tag(Bin.compost)
+                Text(Bin.garbage.rawValue)
+                    .tag(Bin.garbage)
+                Text(Bin.liquid.rawValue)
+                    .tag(Bin.liquid)
+                Text(Bin.recycle.rawValue)
+                    .tag(Bin.recycle)
             }
             .pickerStyle(.segmented)
             .padding(.horizontal)
@@ -41,13 +47,11 @@ struct HistoryView: View {
         .padding(.bottom)
         
         // Show previous attempts based on user's filter choice
-        List(filter(pastQuizzes, by: selectedStatus)) { attempt in
+        List(filter(pastQuizzes, by: selectedBin)) { attempt in
             VStack {
-                Text("Where does \(attempt.object) go?")
-                Text("You said it goes to \(attempt.answerGiven.rawValue).")
-                Text("The correct answer was \(attempt.bin.rawValue).")
-                    .opacity(attempt.status == .incorrect ? 1.0 : 0.0)
+                Text("\(attempt.object)")
                 Spacer()
+                // Shows whether the user's attempt was correct or not.
                 ZStack {
                     Image(systemName: "checkmark.circle")
                         .foregroundColor(.green)
@@ -67,18 +71,27 @@ struct HistoryView: View {
     // MARK: Functions
     
     // Filter the list of attempts to be shown
-    func filter(_ listOfAttempts: [Quiz], by status: Status) -> [Quiz] {
+    func filter(_ listOfAttempts: [Quiz], by bin: Bin) -> [Quiz] {
+        
+        // If the user wants to see attempts of all bins, return the original list
+        if bin == .all {
+            return listOfAttempts
+        }
         
         // Create an empty list of attempts
         var filteredAttempts: [Quiz] = []
         
         // Iterate over the list of attempts, and build a filtered list
-        // that only includes the selected type of attempt
+        // that only includes the attempts of selected bin
         for currentAttempt in listOfAttempts {
             
-            if status == .correct && currentAttempt.status == .correct {
+            if bin == .compost && currentAttempt.bin == .compost {
                 filteredAttempts.insert(currentAttempt, at: 0)
-            } else if status == .incorrect && currentAttempt.status == .incorrect {
+            } else if bin == .garbage && currentAttempt.bin == .garbage {
+                filteredAttempts.insert(currentAttempt, at: 0)
+            } else if bin == .liquid && currentAttempt.bin == .liquid {
+                filteredAttempts.insert(currentAttempt, at: 0)
+            } else if bin == .recycle && currentAttempt.bin == .recycle {
                 filteredAttempts.insert(currentAttempt, at: 0)
             }
             
@@ -86,7 +99,7 @@ struct HistoryView: View {
         
         // Return the filtered list of attempts
         return filteredAttempts
-        
+
     }
     
 }

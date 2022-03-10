@@ -9,6 +9,7 @@ import Foundation
 
 // This enumeration defines the types of bins.
 enum Bin: String {
+    case all = "All"
     case recycle = "Recycle"
     case compost = "Compost"
     case garbage = "Garbage"
