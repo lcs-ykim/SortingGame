@@ -49,6 +49,8 @@ struct HistoryView: View {
         // Show previous attempts based on user's filter choice
         List(filter(pastQuizzes, by: selectedBin)) { attempt in
             VStack {
+                Text("\(attempt.bin.rawValue)")
+                    .opacity(selectedBin == .all ? 1.0 : 0.0)
                 Text("\(attempt.object)")
                 Spacer()
                 // Shows whether the user's attempt was correct or not.
