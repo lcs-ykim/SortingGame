@@ -2,8 +2,6 @@
 //  Quiz.swift
 //  SortingGame
 //
-//  Created by Yeseo Kim on 2022-03-04.
-//
 
 import Foundation
 
@@ -21,13 +19,13 @@ struct Quiz: Identifiable {
 }
 
 // List of all questions
-// Setting the default answer given to "recycle" to
+// Setting the default answerGiven to "recycle" to
 // avoid using nil values
 let uncompletedQuizzes: [Quiz] = [Quiz(object: "Apple",
                                        bin: .compost,
                                        answerGiven: .recycle,
                                        status: .unsolved),
-                                  Quiz(object: "Chicken bones",
+                                  Quiz(object: "Chicken bone",
                                        bin: .compost,
                                        answerGiven: .recycle,
                                        status: .unsolved),
@@ -35,11 +33,11 @@ let uncompletedQuizzes: [Quiz] = [Quiz(object: "Apple",
                                        bin: .compost,
                                        answerGiven: .recycle,
                                        status: .unsolved),
-                                  Quiz(object: "Egg shells",
+                                  Quiz(object: "Egg shell",
                                        bin: .compost,
                                        answerGiven: .recycle,
                                        status: .unsolved),
-                                  Quiz(object: "Biodegradable cutleries",
+                                  Quiz(object: "Biodegradable cutlery",
                                        bin: .garbage,
                                        answerGiven: .recycle,
                                        status: .unsolved),
@@ -47,19 +45,15 @@ let uncompletedQuizzes: [Quiz] = [Quiz(object: "Apple",
                                        bin: .garbage,
                                        answerGiven: .recycle,
                                        status: .unsolved),
-                                  Quiz(object: "Markers",
+                                  Quiz(object: "Marker",
                                        bin: .garbage,
                                        answerGiven: .recycle,
                                        status: .unsolved),
-                                  Quiz(object: "Masks",
+                                  Quiz(object: "Mask",
                                        bin: .garbage,
                                        answerGiven: .recycle,
                                        status: .unsolved),
-                                  Quiz(object: "Paper cups with plastic lining",
-                                       bin: .garbage,
-                                       answerGiven: .recycle,
-                                       status: .unsolved),
-                                  Quiz(object: "Pepper packets with pepper",
+                                  Quiz(object: "Paper cup with plastic lining",
                                        bin: .garbage,
                                        answerGiven: .recycle,
                                        status: .unsolved),
@@ -75,7 +69,7 @@ let uncompletedQuizzes: [Quiz] = [Quiz(object: "Apple",
                                        bin: .liquid,
                                        answerGiven: .recycle,
                                        status: .unsolved),
-                                  Quiz(object: "Cans",
+                                  Quiz(object: "Soda can",
                                        bin: .recycle,
                                        answerGiven: .recycle,
                                        status: .unsolved),
@@ -87,7 +81,7 @@ let uncompletedQuizzes: [Quiz] = [Quiz(object: "Apple",
                                        bin: .recycle,
                                        answerGiven: .recycle,
                                        status: .unsolved),
-                                  Quiz(object: "Pristine paper plates",
+                                  Quiz(object: "Pristine paper plate",
                                        bin: .recycle,
                                        answerGiven: .recycle,
                                        status: .unsolved),
@@ -99,7 +93,7 @@ let uncompletedQuizzes: [Quiz] = [Quiz(object: "Apple",
                                        bin: .recycle,
                                        answerGiven: .recycle,
                                        status: .unsolved),
-                                  Quiz(object: "Test papers",
+                                  Quiz(object: "Test paper",
                                        bin: .recycle,
                                        answerGiven: .recycle,
                                        status: .unsolved)]

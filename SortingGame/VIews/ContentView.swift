@@ -2,8 +2,6 @@
 //  ContentView.swift
 //  SortingGame
 //
-//  Created by Yeseo Kim on 2022-03-04.
-//
 
 import SwiftUI
 
@@ -38,7 +36,8 @@ struct ContentView: View {
             VStack {
                 
                 // Displays the question
-                Text("Where does \(quiz!.object) go?")
+                Text("Where does this object go?")
+                Text("\(quiz!.object)")
                 
                 // Result and input area
                 Picker("Pick Answer", selection: $inputGiven) {
@@ -69,6 +68,10 @@ struct ContentView: View {
                 // Neither of the images show up when the quiz is unsolved
                     .opacity(status == .incorrect ? 1.0 : 0.0)
             }
+            
+            // Only show the correct when the answer is incorrect
+            Text("\(quiz!.bin.rawValue)")
+                .opacity(status == .incorrect ? 1.0 : 0.0)
             
             // Buttons for the user
             ZStack {
@@ -105,12 +108,12 @@ struct ContentView: View {
                     // Randomly pick a new question
                     quiz = uncompletedQuizzes.randomElement()
                     
-                    // Reset question status accordingly
+                    // Reset question status
                     status = .unsolved
                     
                 }, label: {
                     Text("New question")
-                        .font(.largeTitle)
+                        .font(.title)
                 })
                     .padding()
                     .buttonStyle(.bordered)
@@ -129,7 +132,7 @@ struct ContentView: View {
                 
             }, label: {
                 Text("History")
-                    .font(.largeTitle)
+                    .font(.title)
             })
                 .sheet(isPresented: $showHistoryView) {
                     // Passes the updated list of attempts to HistoryView

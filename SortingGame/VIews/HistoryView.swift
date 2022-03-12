@@ -2,8 +2,6 @@
 //  HistoryView.swift
 //  SortingGame
 //
-//  Created by Yeseo Kim on 2022-03-04.
-//
 
 import SwiftUI
 
@@ -14,7 +12,10 @@ struct HistoryView: View {
     // Receives the updated list of user attempts
     @Binding var pastQuizzes: [Quiz]
     
-    // Tracks which bin of attempts the user wants to see
+    // Tracks attempts of which bin the user wants to see
+    // e.g. If the selection were .compost the user would
+    // only view the attempts which have .compost as the
+    // correct type of bin
     @State private var selectedBin: Bin = .all
     
     // MARK: Computer properties
@@ -50,6 +51,8 @@ struct HistoryView: View {
         List(filter(pastQuizzes, by: selectedBin)) { attempt in
             VStack {
                 Text("\(attempt.bin.rawValue)")
+                // Shows the type of bin associated with the attempt
+                // only if the user chooses .all
                     .opacity(selectedBin == .all ? 1.0 : 0.0)
                 Text("\(attempt.object)")
                 Spacer()
